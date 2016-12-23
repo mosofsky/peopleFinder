@@ -1,0 +1,6 @@
+Feature: Download handles of Instagram users
+
+In order to initialize a loyalty management system
+As a marketing operations analyst
+I want to extract handles of Instagram users who have mentioned a particular hashtag
+
