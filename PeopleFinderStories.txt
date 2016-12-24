@@ -4,3 +4,96 @@ In order to initialize a loyalty management system
 As a marketing operations analyst
 I want to extract handles of Instagram users who have mentioned a particular hashtag
 
+Scenario: Authentication
+Given an analyst named Tanya
+And Tanya has a valid account on Instagram identified by the user tanya@teztemayl.com
+When Tanya enters her credentials
+Then the system can query Instagram under her identity
+
+Scenario: Authentication failure
+Given an analyst named Tanya
+And Tanya has a invalid account on Instagram identified by the user badtanya@teztemayl.com
+When Tanya enters her credentials
+Then Tanya should see an error message
+
+Scenario: Enter download request details
+Given an analyst named Tanya
+When Tanya wants to initiate a download
+Then Tanya can enter the following information:
+	| information 	| description 																					|
+	| email 		| Address to send the downloaded user list to as an attachment									|
+	| hashtag		| The hashtag an Instagram user must have mentioned in order to include them in the download 	|
+	| date_from		| The date since which the Instagram user must have mentioned the hashtag						|
+	| date_to		| The date until which the Instagram user must have mentioned the hashtag						|
+
+Scenario: Default to returning users from the last three months
+Given an analyst named Tanya
+When Tanya wants to initiate a download
+Then the date_from is defaulted to 3 months ago
+And the date_to is defaulted to today
+
+Scenario: Submit download request
+Given an analyst named Tanya
+And Tanya entered an email address of tanya@teztemayl.com to receive her download as an attachment
+And Tanya entered the hashtag #URBANDECAY
+And Tanya entered 9/22/2016 as the date_from
+And Tanya entered 12/22/2016 as the date_to
+When Tanya submits the information about the job
+Then Tanya should be given a URL to check the status of the download request
+
+Scenario: Check status of download
+Given an analyst named Tanya
+And Tanya has submitted a download request
+And Tanya has a URL to check the status of the download request
+And 50% of the users have been downloaded
+When Tanya pastes the URL into her Internet browser and presses go in her browser
+Then Tanya should see a message saying the download is 50% complete
+
+Scenario: Receive results
+Given an analyst named Tanya
+And Tanya entered an email address of tanya@teztemayl.com to receive her download as an attachment
+And Tanya entered the hashtag #URBANDECAY
+And Tanya entered 9/22/2016 as the date_from
+And Tanya entered 12/22/2016 as the date_to
+When the download is complete
+Then Tanya should receive an email attachment with the downloaded data
+And the file name should be Instagram_#URBANDECAY_20160922_20161222.csv
+
+Scenario: Error preparing the download
+Given an analyst named Tanya
+And Tanya entered an email address of tanya@teztemayl.com to receive her download as an attachment
+When the download fails
+Then Tanya should receive an email describing the error
+
+Scenario: Download as a background task
+Given an analyst named Tanya
+And Tanya has a valid account on Instagram identified by the user tanya@teztemayl.com
+And the Instagram users who match Tanya's criteria are:
+	| users 	|
+	| @tyxo		|
+	| @peche	|
+	| @malcolm	|
+	| @sarah	|
+When Tanya receives an email attachment with the downloaded data
+Then the attachment should be a CSV file containing the following rows:
+	| users 	|
+	| @tyxo		|
+	| @peche	|
+	| @malcolm	|
+	| @sarah	|
+
+Scenario: Upload Instagram handles into loyalty management system
+Given an analyst named Tanya
+And a CSV file containing the following rows:
+	| users 	|
+	| @tyxo		|
+	| @peche	|
+	| @malcolm	|
+	| @sarah	|
+When Tanya imports the CSV file contents into her loyalty management system
+Then the loyalty management system should contain a list of customer records for the following Instagram users:
+	| customers 	|
+	| @tyxo			|
+	| @peche		|
+	| @malcolm		|
+	| @sarah		|
