@@ -9,15 +9,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var core_2 = require("angular2-logger/core");
 var InstagramService = (function () {
-    function InstagramService() {
+    function InstagramService(_logger) {
+        this._logger = _logger;
     }
     InstagramService.prototype.getHandlesMentioningHashtag = function () {
+        this._logger.warn('getHandlesMentioningHashtag was called');
     };
     ;
     InstagramService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [core_2.Logger])
     ], InstagramService);
     return InstagramService;
 }());

@@ -6,6 +6,7 @@ import { AppComponent }        from './app.component';
 import { HomeComponent }       from './home.component';
 import { routing,
          appRoutingProviders } from './app.routes';
+import { Logger }              from "angular2-logger/core";
 
 @NgModule({
     declarations: [
@@ -14,7 +15,8 @@ import { routing,
     ],
     providers:    [
         appRoutingProviders,
-        AUTH_PROVIDERS
+        AUTH_PROVIDERS,
+        Logger
     ],
     imports:      [
         BrowserModule,

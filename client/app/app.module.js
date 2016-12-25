@@ -14,6 +14,7 @@ var angular2_jwt_1 = require('angular2-jwt');
 var app_component_1 = require('./app.component');
 var home_component_1 = require('./home.component');
 var app_routes_1 = require('./app.routes');
+var core_2 = require("angular2-logger/core");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -25,7 +26,8 @@ var AppModule = (function () {
             ],
             providers: [
                 app_routes_1.appRoutingProviders,
-                angular2_jwt_1.AUTH_PROVIDERS
+                angular2_jwt_1.AUTH_PROVIDERS,
+                core_2.Logger
             ],
             imports: [
                 platform_browser_1.BrowserModule,
