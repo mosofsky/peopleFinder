@@ -16,9 +16,6 @@ export class InstagramService {
 
         let instagramBaseURL = 'https://api.instagram.com/v1/tags/';
         let instagramURLWithTag = instagramBaseURL + hashtag + '/media/recent';
-
-        console.log('instagramURLWithTag = ' + instagramURLWithTag);
-
         let instagramURL = instagramURLWithTag
             + '?'
             + 'access_token=' + access_token + '&'
@@ -27,7 +24,7 @@ export class InstagramService {
         console.log('instagramURL = ' + instagramURL);
 
         return this.jsonp
-            .get(instagramURLWithTag)
+            .get(instagramURL)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -39,33 +36,35 @@ export class InstagramService {
 
         let returnMeta = json.meta;
         let returnCode = json.meta.code;
-        console.log('returnCode = ' + returnCode);
+        console.log('extractData returnCode = ' + returnCode);
         if (400 == returnCode || '400' == returnCode) {
-            console.log('error_type = ' + json.meta.error_type);
-            console.log('error_message = ' + json.meta.error_message);
+            console.log('extractData error_type = ' + json.meta.error_type || 'no error_type');
+            console.log('extractData error_message = ' + json.meta.error_message || 'no error_message');
         }
 
-        let returnData = json.data;
-        console.log('returnData = ' + returnData);
+        return 'extractData got returnCode ' + returnCode;
 
-        let paginationNextUrl = json.pagination.next_url;
-        console.log('paginationNextUrl = ' + paginationNextUrl);
-
-        return json.data || { };
+        // let returnData = json.data;
+        // console.log('returnData = ' + returnData);
+        //
+        // let paginationNextUrl = json.pagination.next_url;
+        // console.log('paginationNextUrl = ' + paginationNextUrl);
+        //
+        // return json.data || { };
 
     }
 
     private handleError(error: Response | any) {
         console.log('handleError called');
 
-        let errMsg: string;
+        let errMsg = "handleError got error of";
         if (error instanceof Response) {
-            const body = error.json() || '';
-            const err = body.error || JSON.stringify(body);
-            errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-        } else {
-            errMsg = error.message ? error.message : error.toString();
+            errMsg += ' error=' + error;
         }
+        else {
+            errMsg += ' message=' + error.message ? error.message : error.toString();
+        }
+
         console.log('handleError errMsg = ' + errMsg);
         return Observable.throw(errMsg);
     }

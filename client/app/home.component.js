@@ -22,7 +22,7 @@ var HomeComponent = (function () {
         var something = this.instagramService.getHandlesMentioningHashtag(hashtag);
         console.log('home.component.ts something.constructor.name = ' + something.constructor.name);
         // From https://angular.io/docs/ts/latest/guide/server-communication.html#!#subscribe
-        something.subscribe(function (val) { return _this.items = something; }, function (error) { return _this.errorMessage = error; });
+        something.subscribe(function (val) { return _this.items = val; }, function (error) { return _this.errorMessage = error; });
     };
     HomeComponent = __decorate([
         core_1.Component({

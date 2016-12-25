@@ -33,7 +33,7 @@ export class HomeComponent {
 
     // From https://angular.io/docs/ts/latest/guide/server-communication.html#!#subscribe
     something.subscribe(
-        val => this.items = something,
+        val => this.items = val,
         error =>  this.errorMessage = <any>error
     );
   }

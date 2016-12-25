@@ -20,14 +20,13 @@ var InstagramService = (function () {
         var access_token = localStorage.getItem('id_token'); // TODO Pass access_token into this method
         var instagramBaseURL = 'https://api.instagram.com/v1/tags/';
         var instagramURLWithTag = instagramBaseURL + hashtag + '/media/recent';
-        console.log('instagramURLWithTag = ' + instagramURLWithTag);
         var instagramURL = instagramURLWithTag
             + '?'
             + 'access_token=' + access_token + '&'
             + 'callback=' + 'JSONP_CALLBACK';
         console.log('instagramURL = ' + instagramURL);
         return this.jsonp
-            .get(instagramURLWithTag)
+            .get(instagramURL)
             .map(this.extractData)
             .catch(this.handleError);
     };
@@ -36,27 +35,28 @@ var InstagramService = (function () {
         var json = res.json();
         var returnMeta = json.meta;
         var returnCode = json.meta.code;
-        console.log('returnCode = ' + returnCode);
+        console.log('extractData returnCode = ' + returnCode);
         if (400 == returnCode || '400' == returnCode) {
-            console.log('error_type = ' + json.meta.error_type);
-            console.log('error_message = ' + json.meta.error_message);
+            console.log('extractData error_type = ' + json.meta.error_type || 'no error_type');
+            console.log('extractData error_message = ' + json.meta.error_message || 'no error_message');
         }
-        var returnData = json.data;
-        console.log('returnData = ' + returnData);
-        var paginationNextUrl = json.pagination.next_url;
-        console.log('paginationNextUrl = ' + paginationNextUrl);
-        return json.data || {};
+        return 'extractData got returnCode ' + returnCode;
+        // let returnData = json.data;
+        // console.log('returnData = ' + returnData);
+        //
+        // let paginationNextUrl = json.pagination.next_url;
+        // console.log('paginationNextUrl = ' + paginationNextUrl);
+        //
+        // return json.data || { };
     };
     InstagramService.prototype.handleError = function (error) {
         console.log('handleError called');
-        var errMsg;
+        var errMsg = "handleError got error of";
         if (error instanceof http_1.Response) {
-            var body = error.json() || '';
-            var err = body.error || JSON.stringify(body);
-            errMsg = error.status + " - " + (error.statusText || '') + " " + err;
+            errMsg += ' error=' + error;
         }
         else {
-            errMsg = error.message ? error.message : error.toString();
+            errMsg += ' message=' + error.message ? error.message : error.toString();
         }
         console.log('handleError errMsg = ' + errMsg);
         return Observable_1.Observable.throw(errMsg);
