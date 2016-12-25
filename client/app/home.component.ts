@@ -17,21 +17,24 @@ import './rxjs-operators';
     <button *ngIf="auth.authenticated()" class="btn btn-primary btn-margin" (click)="getHandlesMentioningHashtag(textValue)">Get handles</button>
     <button *ngIf="auth.authenticated()" class="btn" (click)="textValue=''">Clear</button>
     <pre *ngIf="auth.authenticated()">contents of items: {{items}}</pre>
+    <pre *ngIf="auth.authenticated()">errorMessage: {{errorMessage}}</pre>
   `
 })
 
 export class HomeComponent {
   items: Observable<string[]>;
+  errorMessage: Observable<string[]>;
 
   constructor(private auth: Auth, private instagramService: InstagramService) {}
 
   getHandlesMentioningHashtag (hashtag: string) {
     let something = this.instagramService.getHandlesMentioningHashtag(hashtag);
-    console.log('home.component.ts something = ' + something);
+    console.log('home.component.ts something.constructor.name = ' + something.constructor.name);
 
-    // From http://stackoverflow.com/a/36395263/2848676
-    something.subscribe(val => console.log('something.subscribe val = ' + val));
-
-    this.items = something;
+    // From https://angular.io/docs/ts/latest/guide/server-communication.html#!#subscribe
+    something.subscribe(
+        val => this.items = something,
+        error =>  this.errorMessage = <any>error
+    );
   }
 };

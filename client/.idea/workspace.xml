@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="0b7bfeaa-a464-487d-94fb-ced0e5f391ab" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.module.js" afterPath="$PROJECT_DIR$/app/app.module.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.module.js.map" afterPath="$PROJECT_DIR$/app/app.module.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.module.ts" afterPath="$PROJECT_DIR$/app/app.module.ts" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/home.component.js" afterPath="$PROJECT_DIR$/app/home.component.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/home.component.js.map" afterPath="$PROJECT_DIR$/app/home.component.js.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/home.component.ts" afterPath="$PROJECT_DIR$/app/home.component.ts" />
@@ -36,7 +33,7 @@
         <entry file="file://$PROJECT_DIR$/app/home.component.ts">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="466">
-              <caret line="32" column="42" lean-forward="false" selection-start-line="32" selection-start-column="42" selection-end-line="32" selection-end-column="42" />
+              <caret line="32" column="0" lean-forward="true" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
               <folding>
                 <element signature="e#0#43#0" expanded="true" />
               </folding>
@@ -47,8 +44,8 @@
       <file leaf-file-name="instagramService.service.ts" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/instagramService.service.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="256">
-              <caret line="26" column="52" lean-forward="false" selection-start-line="26" selection-start-column="52" selection-end-line="26" selection-end-column="52" />
+            <state relative-caret-position="166">
+              <caret line="23" column="44" lean-forward="true" selection-start-line="23" selection-start-column="44" selection-end-line="23" selection-end-column="44" />
               <folding>
                 <element signature="e#0#65#0" expanded="true" />
               </folding>
@@ -255,12 +252,12 @@
       <option name="presentableId" value="Default" />
       <updated>1482621406509</updated>
       <workItem from="1482621411614" duration="2757000" />
-      <workItem from="1482628095092" duration="12733000" />
+      <workItem from="1482628095092" duration="13704000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15490000" />
+    <option name="totallyTimeSpent" value="16461000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -567,7 +564,7 @@
     <entry file="file://$PROJECT_DIR$/app/home.component.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="466">
-          <caret line="32" column="42" lean-forward="false" selection-start-line="32" selection-start-column="42" selection-end-line="32" selection-end-column="42" />
+          <caret line="32" column="0" lean-forward="true" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
           <folding>
             <element signature="e#0#43#0" expanded="true" />
           </folding>
@@ -576,8 +573,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/instagramService.service.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="26" column="52" lean-forward="false" selection-start-line="26" selection-start-column="52" selection-end-line="26" selection-end-column="52" />
+        <state relative-caret-position="166">
+          <caret line="23" column="44" lean-forward="true" selection-start-line="23" selection-start-column="44" selection-end-line="23" selection-end-column="44" />
           <folding>
             <element signature="e#0#65#0" expanded="true" />
           </folding>

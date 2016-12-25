@@ -21,7 +21,7 @@ export class InstagramService {
 
         let instagramURL = instagramURLWithTag
             + '?'
-            + 'access_token=' + access_token
+            + 'access_token=' + access_token + '&'
             + 'callback=' + 'JSONP_CALLBACK';
 
         console.log('instagramURL = ' + instagramURL);
@@ -40,12 +40,10 @@ export class InstagramService {
         let returnMeta = json.meta;
         let returnCode = json.meta.code;
         console.log('returnCode = ' + returnCode);
-
-        let returnerror_type = json.meta.error_type;
-        console.log('returnerror_type = ' + returnerror_type);
-
-        let returnerror_message = json.meta.error_message;
-        console.log('returnerror_message = ' + returnerror_message);
+        if (400 == returnCode || '400' == returnCode) {
+            console.log('error_type = ' + json.meta.error_type);
+            console.log('error_message = ' + json.meta.error_message);
+        }
 
         let returnData = json.data;
         console.log('returnData = ' + returnData);
