@@ -18,13 +18,17 @@ var HomeComponent = (function () {
         this.instagramService = instagramService;
     }
     HomeComponent.prototype.getHandlesMentioningHashtag = function (hashtag) {
-        this.items = this.instagramService.getHandlesMentioningHashtag(hashtag);
+        var something = this.instagramService.getHandlesMentioningHashtag(hashtag);
+        console.log('home.component.ts something = ' + something);
+        // From http://stackoverflow.com/a/36395263/2848676
+        something.subscribe(function (val) { return console.log('something.subscribe val = ' + val); });
+        this.items = something;
     };
     HomeComponent = __decorate([
         core_1.Component({
             selector: 'home',
             providers: [instagramService_service_1.InstagramService],
-            template: "\n    <h4 *ngIf=\"auth.authenticated()\">You are logged in</h4>\n    <h4 *ngIf=\"!auth.authenticated()\">You are not logged in, please click 'Log in' button to login</h4>\n\n    <input *ngIf=\"auth.authenticated()\" name=\"hashtag\" type=\"text\" [(ngModel)]=\"textValue\" required>\n    <button *ngIf=\"auth.authenticated()\" class=\"btn btn-primary btn-margin\" (click)=\"getHandlesMentioningHashtag(textValue)\">Get handles</button>\n    <button *ngIf=\"auth.authenticated()\" class=\"btn\" (click)=\"textValue=''\">Clear</button>\n    <pre *ngIf=\"auth.authenticated()\">{{items}}</pre>\n  "
+            template: "\n    <h4 *ngIf=\"auth.authenticated()\">You are logged in</h4>\n    <h4 *ngIf=\"!auth.authenticated()\">You are not logged in, please click 'Log in' button to login</h4>\n\n    <input *ngIf=\"auth.authenticated()\" name=\"hashtag\" type=\"text\" [(ngModel)]=\"textValue\" required>\n    <button *ngIf=\"auth.authenticated()\" class=\"btn btn-primary btn-margin\" (click)=\"getHandlesMentioningHashtag(textValue)\">Get handles</button>\n    <button *ngIf=\"auth.authenticated()\" class=\"btn\" (click)=\"textValue=''\">Clear</button>\n    <pre *ngIf=\"auth.authenticated()\">contents of items: {{items}}</pre>\n  "
         }), 
         __metadata('design:paramtypes', [auth_service_1.Auth, instagramService_service_1.InstagramService])
     ], HomeComponent);

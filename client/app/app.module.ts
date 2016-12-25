@@ -6,7 +6,6 @@ import { AppComponent }        from './app.component';
 import { HomeComponent }       from './home.component';
 import { routing,
          appRoutingProviders } from './app.routes';
-import { Logger }              from "angular2-logger/core";
 
 import { HttpModule, JsonpModule } from '@angular/http';
 
@@ -19,8 +18,7 @@ import { FormsModule }          from '@angular/forms';
     ],
     providers:    [
         appRoutingProviders,
-        AUTH_PROVIDERS,
-        Logger
+        AUTH_PROVIDERS
     ],
     imports:      [
         BrowserModule,

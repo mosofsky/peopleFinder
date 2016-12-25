@@ -3,6 +3,7 @@ import { Observable }       from 'rxjs/Observable';
 import { Auth }       from './auth.service';
 import { InstagramService }  from './instagramService.service';
 
+
 import './rxjs-operators';
 
 @Component({
@@ -15,7 +16,7 @@ import './rxjs-operators';
     <input *ngIf="auth.authenticated()" name="hashtag" type="text" [(ngModel)]="textValue" required>
     <button *ngIf="auth.authenticated()" class="btn btn-primary btn-margin" (click)="getHandlesMentioningHashtag(textValue)">Get handles</button>
     <button *ngIf="auth.authenticated()" class="btn" (click)="textValue=''">Clear</button>
-    <pre *ngIf="auth.authenticated()">{{items}}</pre>
+    <pre *ngIf="auth.authenticated()">contents of items: {{items}}</pre>
   `
 })
 
@@ -25,6 +26,12 @@ export class HomeComponent {
   constructor(private auth: Auth, private instagramService: InstagramService) {}
 
   getHandlesMentioningHashtag (hashtag: string) {
-    this.items = this.instagramService.getHandlesMentioningHashtag(hashtag);
+    let something = this.instagramService.getHandlesMentioningHashtag(hashtag);
+    console.log('home.component.ts something = ' + something);
+
+    // From http://stackoverflow.com/a/36395263/2848676
+    something.subscribe(val => console.log('something.subscribe val = ' + val));
+
+    this.items = something;
   }
 };

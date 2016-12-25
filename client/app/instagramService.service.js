@@ -9,33 +9,46 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var core_2 = require("angular2-logger/core");
 var http_1 = require('@angular/http');
 var Observable_1 = require('rxjs/Observable');
 var InstagramService = (function () {
-    function InstagramService(_logger, jsonp, http) {
-        this._logger = _logger;
+    function InstagramService(jsonp) {
         this.jsonp = jsonp;
-        this.http = http;
     }
     InstagramService.prototype.getHandlesMentioningHashtag = function (hashtag) {
-        this._logger.warn('getHandlesMentioningHashtag was called for hashtag = ' + hashtag);
+        console.log('getHandlesMentioningHashtag LOG was called for hashtag = ' + hashtag);
         var access_token = localStorage.getItem('id_token'); // TODO Pass access_token into this method
         var instagramBaseURL = 'https://api.instagram.com/v1/tags/';
-        var instagramURLWithTag = instagramBaseURL + hashtag;
-        var params = new http_1.URLSearchParams();
-        params.set('access_token', access_token);
-        params.set('callback', 'JSONP_CALLBACK');
+        var instagramURLWithTag = instagramBaseURL + hashtag + '/media/recent';
+        console.log('instagramURLWithTag = ' + instagramURLWithTag);
+        var instagramURL = instagramURLWithTag
+            + '?'
+            + 'access_token=' + access_token
+            + 'callback=' + 'JSONP_CALLBACK';
+        console.log('instagramURL = ' + instagramURL);
         return this.jsonp
-            .get(instagramURLWithTag, { search: params })
+            .get(instagramURLWithTag)
             .map(this.extractData)
-            .catch(this.handleError); // TODO Error handling for network failures
+            .catch(this.handleError);
     };
     InstagramService.prototype.extractData = function (res) {
-        var body = res.json();
-        return body.data || {};
+        console.log('extractData called');
+        var json = res.json();
+        var returnMeta = json.meta;
+        var returnCode = json.meta.code;
+        console.log('returnCode = ' + returnCode);
+        var returnerror_type = json.meta.error_type;
+        console.log('returnerror_type = ' + returnerror_type);
+        var returnerror_message = json.meta.error_message;
+        console.log('returnerror_message = ' + returnerror_message);
+        var returnData = json.data;
+        console.log('returnData = ' + returnData);
+        var paginationNextUrl = json.pagination.next_url;
+        console.log('paginationNextUrl = ' + paginationNextUrl);
+        return json.data || {};
     };
     InstagramService.prototype.handleError = function (error) {
+        console.log('handleError called');
         var errMsg;
         if (error instanceof http_1.Response) {
             var body = error.json() || '';
@@ -45,12 +58,12 @@ var InstagramService = (function () {
         else {
             errMsg = error.message ? error.message : error.toString();
         }
-        this._logger.error(errMsg);
+        console.log('handleError errMsg = ' + errMsg);
         return Observable_1.Observable.throw(errMsg);
     };
     InstagramService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [core_2.Logger, http_1.Jsonp, http_1.Http])
+        __metadata('design:paramtypes', [http_1.Jsonp])
     ], InstagramService);
     return InstagramService;
 }());

@@ -1,39 +1,65 @@
 import {Injectable}                         from '@angular/core';
-import {Logger}                             from "angular2-logger/core";
-import { Http, Jsonp, URLSearchParams, Response}   from '@angular/http';
-import { Observable }                       from 'rxjs/Observable';
+import {Jsonp, URLSearchParams, Response}   from '@angular/http';
+import {Observable}                         from 'rxjs/Observable';
 
 @Injectable()
 export class InstagramService {
 
-    constructor(private _logger: Logger, private jsonp: Jsonp, private http: Http) {
+    constructor( private jsonp: Jsonp) {
 
     }
 
     public getHandlesMentioningHashtag(hashtag: string) {
-        this._logger.warn('getHandlesMentioningHashtag was called for hashtag = ' + hashtag);
+        console.log('getHandlesMentioningHashtag LOG was called for hashtag = ' + hashtag);
 
         let access_token = localStorage.getItem('id_token');  // TODO Pass access_token into this method
 
         let instagramBaseURL = 'https://api.instagram.com/v1/tags/';
-        let instagramURLWithTag = instagramBaseURL + hashtag;
+        let instagramURLWithTag = instagramBaseURL + hashtag + '/media/recent';
 
-        let params = new URLSearchParams();
-        params.set('access_token', access_token);
-        params.set('callback', 'JSONP_CALLBACK');
+        console.log('instagramURLWithTag = ' + instagramURLWithTag);
+
+        let instagramURL = instagramURLWithTag
+            + '?'
+            + 'access_token=' + access_token
+            + 'callback=' + 'JSONP_CALLBACK';
+
+        console.log('instagramURL = ' + instagramURL);
 
         return this.jsonp
-            .get(instagramURLWithTag, {search: params})
+            .get(instagramURLWithTag)
             .map(this.extractData)
-            .catch(this.handleError); // TODO Error handling for network failures
+            .catch(this.handleError);
     }
 
     private extractData(res: Response) {
-        let body = res.json();
-        return body.data || { };
+        console.log('extractData called');
+
+        let json = res.json();
+
+        let returnMeta = json.meta;
+        let returnCode = json.meta.code;
+        console.log('returnCode = ' + returnCode);
+
+        let returnerror_type = json.meta.error_type;
+        console.log('returnerror_type = ' + returnerror_type);
+
+        let returnerror_message = json.meta.error_message;
+        console.log('returnerror_message = ' + returnerror_message);
+
+        let returnData = json.data;
+        console.log('returnData = ' + returnData);
+
+        let paginationNextUrl = json.pagination.next_url;
+        console.log('paginationNextUrl = ' + paginationNextUrl);
+
+        return json.data || { };
+
     }
 
     private handleError(error: Response | any) {
+        console.log('handleError called');
+
         let errMsg: string;
         if (error instanceof Response) {
             const body = error.json() || '';
@@ -42,7 +68,7 @@ export class InstagramService {
         } else {
             errMsg = error.message ? error.message : error.toString();
         }
-        this._logger.error(errMsg);
+        console.log('handleError errMsg = ' + errMsg);
         return Observable.throw(errMsg);
     }
 }
