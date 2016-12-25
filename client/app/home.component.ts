@@ -28,11 +28,9 @@ export class HomeComponent {
   constructor(private auth: Auth, private instagramService: InstagramService) {}
 
   getHandlesMentioningHashtag (hashtag: string) {
-    let something = this.instagramService.getHandlesMentioningHashtag(hashtag);
-    console.log('home.component.ts something.constructor.name = ' + something.constructor.name);
+    let observable = this.instagramService.getHandlesMentioningHashtag(hashtag);
 
-    // From https://angular.io/docs/ts/latest/guide/server-communication.html#!#subscribe
-    something.subscribe(
+    observable.subscribe(
         val => this.items = val,
         error =>  this.errorMessage = <any>error
     );
