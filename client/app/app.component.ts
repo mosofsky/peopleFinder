@@ -1,6 +1,8 @@
 import { Component }         from '@angular/core';
 import { Auth }              from './auth.service';
 
+import './rxjs-operators';
+
 @Component({
     selector: 'my-app',
     providers: [ Auth ],

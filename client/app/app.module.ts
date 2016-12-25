@@ -8,6 +8,8 @@ import { routing,
          appRoutingProviders } from './app.routes';
 import { Logger }              from "angular2-logger/core";
 
+import { HttpModule, JsonpModule } from '@angular/http';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -20,7 +22,9 @@ import { Logger }              from "angular2-logger/core";
     ],
     imports:      [
         BrowserModule,
-        routing
+        routing,
+        HttpModule,
+        JsonpModule
     ],
     bootstrap:    [AppComponent],
 })

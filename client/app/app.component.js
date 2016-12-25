@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var auth_service_1 = require('./auth.service');
+require('./rxjs-operators');
 var AppComponent = (function () {
     function AppComponent(auth) {
         this.auth = auth;
