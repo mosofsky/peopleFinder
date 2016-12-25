@@ -12,8 +12,8 @@ import './rxjs-operators';
     <h4 *ngIf="auth.authenticated()">You are logged in</h4>
     <h4 *ngIf="!auth.authenticated()">You are not logged in, please click 'Log in' button to login</h4>
 
-    <input *ngIf="auth.authenticated()" #hashtag type="text" [(ngModel)]="textValue" required>
-    <button *ngIf="auth.authenticated()" class="btn btn-primary btn-margin" (click)="getHandlesMentioningHashtag(hashtag.value)">Get handles</button>
+    <input *ngIf="auth.authenticated()" name="hashtag" type="text" [(ngModel)]="textValue" required>
+    <button *ngIf="auth.authenticated()" class="btn btn-primary btn-margin" (click)="getHandlesMentioningHashtag(textValue)">Get handles</button>
     <button *ngIf="auth.authenticated()" class="btn" (click)="textValue=''">Clear</button>
     <pre *ngIf="auth.authenticated()">{{items}}</pre>
   `
