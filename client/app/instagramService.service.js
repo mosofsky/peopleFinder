@@ -15,7 +15,9 @@ var InstagramService = (function () {
         this._logger = _logger;
     }
     InstagramService.prototype.getHandlesMentioningHashtag = function () {
-        this._logger.warn('getHandlesMentioningHashtag was called');
+        //localStorage.setItem('id_token', authResult.idToken);
+        var access_token = localStorage.getItem('id_token');
+        this._logger.warn('getHandlesMentioningHashtag was called and access_token = ' + access_token);
     };
     ;
     InstagramService = __decorate([

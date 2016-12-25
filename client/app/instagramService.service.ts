@@ -9,6 +9,8 @@ export class InstagramService {
   }
 
   public getHandlesMentioningHashtag() {
-      this._logger.warn('getHandlesMentioningHashtag was called');
+      //localStorage.setItem('id_token', authResult.idToken);
+      var access_token = localStorage.getItem('id_token');
+      this._logger.warn('getHandlesMentioningHashtag was called and access_token = ' + access_token);
   };
 }
