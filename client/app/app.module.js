@@ -16,6 +16,7 @@ var home_component_1 = require('./home.component');
 var app_routes_1 = require('./app.routes');
 var core_2 = require("angular2-logger/core");
 var http_1 = require('@angular/http');
+var forms_1 = require('@angular/forms');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -34,7 +35,8 @@ var AppModule = (function () {
                 platform_browser_1.BrowserModule,
                 app_routes_1.routing,
                 http_1.HttpModule,
-                http_1.JsonpModule
+                http_1.JsonpModule,
+                forms_1.FormsModule
             ],
             bootstrap: [app_component_1.AppComponent],
         }), 

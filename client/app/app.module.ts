@@ -10,6 +10,8 @@ import { Logger }              from "angular2-logger/core";
 
 import { HttpModule, JsonpModule } from '@angular/http';
 
+import { FormsModule }          from '@angular/forms';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -24,7 +26,8 @@ import { HttpModule, JsonpModule } from '@angular/http';
         BrowserModule,
         routing,
         HttpModule,
-        JsonpModule
+        JsonpModule,
+        FormsModule
     ],
     bootstrap:    [AppComponent],
 })
