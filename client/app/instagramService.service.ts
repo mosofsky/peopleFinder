@@ -24,7 +24,7 @@ export class InstagramService {
 
         return this.jsonp
             .get(instagramURLWithTag, {search: params})
-            .map(response => <string[]> response.json()[1])
+            .map(this.extractData)
             .catch(this.handleError); // TODO Error handling for network failures
     }
 

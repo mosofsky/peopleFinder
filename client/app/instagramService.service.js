@@ -28,7 +28,7 @@ var InstagramService = (function () {
         params.set('callback', 'JSONP_CALLBACK');
         return this.jsonp
             .get(instagramURLWithTag, { search: params })
-            .map(function (response) { return response.json()[1]; })
+            .map(this.extractData)
             .catch(this.handleError); // TODO Error handling for network failures
     };
     InstagramService.prototype.extractData = function (res) {
