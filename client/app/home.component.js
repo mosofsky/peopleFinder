@@ -10,16 +10,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var auth_service_1 = require('./auth.service');
+var instagramService_service_1 = require('./instagramService.service');
 var HomeComponent = (function () {
-    function HomeComponent(auth) {
+    function HomeComponent(auth, instagramService) {
         this.auth = auth;
+        this.instagramService = instagramService;
     }
     HomeComponent = __decorate([
         core_1.Component({
             selector: 'home',
-            template: "\n    <h4 *ngIf=\"auth.authenticated()\">You are logged in</h4>\n    <h4 *ngIf=\"!auth.authenticated()\">You are not logged in, please click 'Log in' button to login</h4>\n  "
+            providers: [instagramService_service_1.InstagramService],
+            template: "\n    <h4 *ngIf=\"auth.authenticated()\">You are logged in</h4>\n    <h4 *ngIf=\"!auth.authenticated()\">You are not logged in, please click 'Log in' button to login</h4>\n    <button *ngIf=\"auth.authenticated()\" class=\"btn btn-primary btn-margin\" (click)=\"instagramService.getHandlesMentioningHashtag()\">Get handles</button>\n  "
         }), 
-        __metadata('design:paramtypes', [auth_service_1.Auth])
+        __metadata('design:paramtypes', [auth_service_1.Auth, instagramService_service_1.InstagramService])
     ], HomeComponent);
     return HomeComponent;
 }());
