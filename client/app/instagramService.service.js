@@ -21,9 +21,8 @@ var InstagramService = (function () {
         var instagramBaseURL = 'https://api.instagram.com/v1/tags/';
         var instagramURLWithTag = instagramBaseURL + hashtag + '/media/recent';
         var instagramURL = instagramURLWithTag
-            + '?'
-            + 'access_token=' + access_token + '&'
-            + 'callback=' + 'JSONP_CALLBACK';
+            + '?' + 'access_token=' + access_token
+            + '&' + 'callback=' + 'JSONP_CALLBACK';
         console.log('instagramURL = ' + instagramURL);
         return this.jsonp
             .get(instagramURL)

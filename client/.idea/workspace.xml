@@ -3,7 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="0b7bfeaa-a464-487d-94fb-ced0e5f391ab" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/home.component.ts" afterPath="$PROJECT_DIR$/app/home.component.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/instagramService.service.js" afterPath="$PROJECT_DIR$/app/instagramService.service.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/instagramService.service.js.map" afterPath="$PROJECT_DIR$/app/instagramService.service.js.map" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/instagramService.service.ts" afterPath="$PROJECT_DIR$/app/instagramService.service.ts" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -24,7 +26,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="home.component.ts" pinned="false" current-in-tab="true">
+      <file leaf-file-name="home.component.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/home.component.ts">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="451">
@@ -39,11 +41,21 @@
       <file leaf-file-name="instagramService.service.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/instagramService.service.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="26" column="29" lean-forward="false" selection-start-line="26" selection-start-column="29" selection-end-line="26" selection-end-column="29" />
+            <state relative-caret-position="180">
+              <caret line="14" column="39" lean-forward="false" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="39" />
               <folding>
                 <element signature="e#0#65#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="auth.service.ts" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/auth.service.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="195">
+              <caret line="15" column="13" lean-forward="false" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -68,8 +80,8 @@
         <option value="$PROJECT_DIR$/app/rxjs-operators.ts" />
         <option value="$PROJECT_DIR$/app/app.component.ts" />
         <option value="$PROJECT_DIR$/app/app.module.ts" />
-        <option value="$PROJECT_DIR$/app/instagramService.service.ts" />
         <option value="$PROJECT_DIR$/app/home.component.ts" />
+        <option value="$PROJECT_DIR$/app/instagramService.service.ts" />
       </list>
     </option>
   </component>
@@ -248,12 +260,12 @@
       <option name="presentableId" value="Default" />
       <updated>1482621406509</updated>
       <workItem from="1482621411614" duration="2757000" />
-      <workItem from="1482628095092" duration="15882000" />
+      <workItem from="1482628095092" duration="16290000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="18639000" />
+    <option name="totallyTimeSpent" value="19047000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -511,14 +523,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/auth.service.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="15" column="13" lean-forward="false" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/auth.config.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -557,16 +561,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/instagramService.service.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="26" column="29" lean-forward="false" selection-start-line="26" selection-start-column="29" selection-end-line="26" selection-end-column="29" />
-          <folding>
-            <element signature="e#0#65#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/home.component.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="451">
@@ -574,6 +568,24 @@
           <folding>
             <element signature="e#0#43#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/instagramService.service.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="14" column="39" lean-forward="false" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#65#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/auth.service.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="15" column="13" lean-forward="false" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>

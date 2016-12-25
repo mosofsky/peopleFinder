@@ -17,9 +17,8 @@ export class InstagramService {
         let instagramBaseURL = 'https://api.instagram.com/v1/tags/';
         let instagramURLWithTag = instagramBaseURL + hashtag + '/media/recent';
         let instagramURL = instagramURLWithTag
-            + '?'
-            + 'access_token=' + access_token + '&'
-            + 'callback=' + 'JSONP_CALLBACK';
+            + '?' + 'access_token=' + access_token
+            + '&' + 'callback=' + 'JSONP_CALLBACK';
 
         console.log('instagramURL = ' + instagramURL);
 
