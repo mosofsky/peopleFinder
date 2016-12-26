@@ -43,7 +43,22 @@ def access_token_callback():
         abort(403)
     code = request.args.get('code')
     # We'll change this next line in just a moment
-    return "got a code! %s" % code
+    return "got an access token! %s" % get_token(code)
+
+import requests
+#import requests.auth
+def get_token(code):
+#    client_auth = requests.auth.HTTPBasicAuth(CLIENT_ID, CLIENT_SECRET)
+    post_data = {"client_id": CLIENT_ID,
+                  "client_secret": CLIENT_SECRET,
+                  "grant_type": "authorization_code",
+                  "redirect_uri": REDIRECT_URI,
+                  "code": code}
+    response = requests.post("https://api.instagram.com/oauth/access_token",
+#                             auth=client_auth,
+                             data=post_data)
+    token_json = response.json()
+    return token_json["access_token"]
 
 if __name__ == '__main__':
     app.run(debug=True, port=65010)
