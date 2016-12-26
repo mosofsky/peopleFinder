@@ -1,6 +1,7 @@
 CLIENT_ID = "1748a14705504707a7c7108b249d4dbe"
 CLIENT_SECRET = "3fdf94938f71419da0022c90cdd238c2"
 REDIRECT_URI = "http://localhost:65010/access_token_callback"
+TAGS_API_WRAPPER_URI = "http://localhost:65010/tags_api_wrapper"
 
 from flask import Flask
 app = Flask(__name__)
@@ -42,8 +43,25 @@ def access_token_callback():
         # Uh-oh, this request wasn't started by us!
         abort(403)
     code = request.args.get('code')
-    text = '<a href="https://api.instagram.com/v1/tags/URBANDECAY/media/recent?access_token=%s">Obtain a list of media recently tagged #URBANDECAY</a>'
-    return text % get_token(code)
+    access_token = get_token(code)
+    html = '<h3>What hashtag do you want to retrieve people for (omit "#")?</h3>' + '\n'
+    html += '<form action="%s" method="get">' + '\n'
+    html = html % TAGS_API_WRAPPER_URI
+    html += '<input type="text" name="hashtag">' + '\n'
+    html += '<input type="hidden" name="access_token" value="%s">' + '\n'
+    html = html % access_token
+    html += '</form>' + '\n'
+    return html
+
+@app.route('/tags_api_wrapper')
+def tags_api_wrapper():
+    access_token = request.args.get('access_token', 'ACCESS_TOKEN_MISSING')
+    hashtag = request.args.get('hashtag', 'HASHTAG_MISSING')
+    params = {"access_token": access_token}
+    import urllib
+    url = "https://api.instagram.com/v1/tags/" + hashtag + "/media/recent?" + urllib.urlencode(params)
+    text = '<a href="%s">Click here to retrieve results from Instagram</a>'
+    return text % url
 
 import requests
 def get_token(code):
