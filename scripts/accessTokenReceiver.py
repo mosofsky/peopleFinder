@@ -1,12 +1,12 @@
-CLIENT_ID = "p-jcoLKBynTLew"
-CLIENT_SECRET = "gko_LXELoV07ZBNUXrvWZfzE3aI"
-REDIRECT_URI = "http://localhost:65010/reddit_callback"
+CLIENT_ID = "1748a14705504707a7c7108b249d4dbe"
+CLIENT_SECRET = "3fdf94938f71419da0022c90cdd238c2"
+REDIRECT_URI = "http://localhost:65010/access_token_callback"
 
 from flask import Flask
 app = Flask(__name__)
 @app.route('/')
 def homepage():
-    text = '<a href="%s">Authenticate with reddit</a>'
+    text = '<a href="%s">Authenticate with Instagram</a>'
     return text % make_authorization_url()
 
 def make_authorization_url():
@@ -17,12 +17,10 @@ def make_authorization_url():
     save_created_state(state)
     params = {"client_id": CLIENT_ID,
               "response_type": "code",
-              "state": state,
               "redirect_uri": REDIRECT_URI,
-              "duration": "temporary",
-              "scope": "identity"}
+              "state": state}
     import urllib
-    url = "https://ssl.reddit.com/api/v1/authorize?" + urllib.urlencode(params)
+    url = "https://www.instagram.com/oauth/authorize/?" + urllib.urlencode(params)
     return url
 
 # Left as an exercise to the reader.
@@ -32,6 +30,20 @@ def save_created_state(state):
     pass
 def is_valid_state(state):
     return True
+
+from flask import abort, request
+@app.route('/access_token_callback')
+def access_token_callback():
+    error = request.args.get('error', '')
+    if error:
+        return "Error: " + error
+    state = request.args.get('state', '')
+    if not is_valid_state(state):
+        # Uh-oh, this request wasn't started by us!
+        abort(403)
+    code = request.args.get('code')
+    # We'll change this next line in just a moment
+    return "got a code! %s" % code
 
 if __name__ == '__main__':
     app.run(debug=True, port=65010)
