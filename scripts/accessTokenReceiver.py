@@ -8,6 +8,8 @@ TAGS_API_WRAPPER_URI = HOST_BASE_URI + TAGS_API_WRAPPER_URI_SUFFIX
 INSTAGRAM_AUTH_API_URL = "https://www.instagram.com/oauth/authorize/"
 INSTAGRAM_BASE_URI = "https://api.instagram.com/"
 
+import requests
+
 from flask import Flask
 app = Flask(__name__)
 @app.route('/')
@@ -65,10 +67,16 @@ def tags_api_wrapper():
     params = {"access_token": access_token}
     import urllib
     url = INSTAGRAM_BASE_URI + "v1/tags/" + hashtag + "/media/recent?" + urllib.urlencode(params)
-    html = '<a href="%s">Click here to retrieve results from Instagram</a>'
-    return html % url
-
-import requests
+    response = requests.get(url)
+    # print "############# response: " + response.text  THIS WORKS
+    # print "############# response code: " + str(response.json()['meta']['code']) THIS WORKS
+    tags_json = response.json()
+    data_json = tags_json['data']
+    auser = 'USERPLACEHOLDER'
+    for data_json in data_json:
+      auser = data_json['user']['username']
+    return str(auser)
+    
 def get_token(code):
     post_data = {"client_id": CLIENT_ID,
                   "client_secret": CLIENT_SECRET,
