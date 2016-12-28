@@ -1,7 +1,12 @@
 CLIENT_ID = "1748a14705504707a7c7108b249d4dbe"
 CLIENT_SECRET = "3fdf94938f71419da0022c90cdd238c2"
-REDIRECT_URI = "http://localhost:65010/access_token_callback"
-TAGS_API_WRAPPER_URI = "http://localhost:65010/tags_api_wrapper"
+HOST_BASE_URI = "http://localhost:65010/" 
+REDIRECT_URI_SUFFIX = "access_token_callback"
+REDIRECT_URI = HOST_BASE_URI + REDIRECT_URI_SUFFIX
+TAGS_API_WRAPPER_URI_SUFFIX = "tags_api_wrapper"
+TAGS_API_WRAPPER_URI = HOST_BASE_URI + TAGS_API_WRAPPER_URI_SUFFIX
+INSTAGRAM_AUTH_API_URL = "https://www.instagram.com/oauth/authorize/"
+INSTAGRAM_BASE_URI = "https://api.instagram.com/"
 
 from flask import Flask
 app = Flask(__name__)
@@ -21,7 +26,7 @@ def make_authorization_url():
               "redirect_uri": REDIRECT_URI,
               "state": state}
     import urllib
-    url = "https://www.instagram.com/oauth/authorize/?" + urllib.urlencode(params)
+    url = INSTAGRAM_AUTH_API_URL + "?" + urllib.urlencode(params)
     return url
 
 # Left as an exercise to the reader.
@@ -33,7 +38,7 @@ def is_valid_state(state):
     return True
 
 from flask import abort, request
-@app.route('/access_token_callback')
+@app.route('/' + REDIRECT_URI_SUFFIX)
 def access_token_callback():
     error = request.args.get('error', '')
     if error:
@@ -53,15 +58,15 @@ def access_token_callback():
     html += '</form>' + '\n'
     return html
 
-@app.route('/tags_api_wrapper')
+@app.route('/' + TAGS_API_WRAPPER_URI_SUFFIX)
 def tags_api_wrapper():
     access_token = request.args.get('access_token', 'ACCESS_TOKEN_MISSING')
     hashtag = request.args.get('hashtag', 'HASHTAG_MISSING')
     params = {"access_token": access_token}
     import urllib
-    url = "https://api.instagram.com/v1/tags/" + hashtag + "/media/recent?" + urllib.urlencode(params)
-    text = '<a href="%s">Click here to retrieve results from Instagram</a>'
-    return text % url
+    url = INSTAGRAM_BASE_URI + "v1/tags/" + hashtag + "/media/recent?" + urllib.urlencode(params)
+    html = '<a href="%s">Click here to retrieve results from Instagram</a>'
+    return html % url
 
 import requests
 def get_token(code):
@@ -70,7 +75,7 @@ def get_token(code):
                   "grant_type": "authorization_code",
                   "redirect_uri": REDIRECT_URI,
                   "code": code}
-    response = requests.post("https://api.instagram.com/oauth/access_token",
+    response = requests.post(INSTAGRAM_BASE_URI + "oauth/access_token",
                              data=post_data)
     token_json = response.json()
     return token_json["access_token"]
