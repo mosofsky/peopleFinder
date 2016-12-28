@@ -5,8 +5,11 @@ REDIRECT_URI_SUFFIX = "access_token_callback"
 REDIRECT_URI = HOST_BASE_URI + REDIRECT_URI_SUFFIX
 TAGS_API_WRAPPER_URI_SUFFIX = "tags_api_wrapper"
 TAGS_API_WRAPPER_URI = HOST_BASE_URI + TAGS_API_WRAPPER_URI_SUFFIX
+UNPICKLE_URI_SUFFIX = "unpickle"
+UNPICKLE_URI = HOST_BASE_URI + UNPICKLE_URI_SUFFIX
 INSTAGRAM_AUTH_API_URL = "https://www.instagram.com/oauth/authorize/"
 INSTAGRAM_BASE_URI = "https://api.instagram.com/"
+TAG_DICT_PICKLE_FILE_NAME = 'tag_dict.pickle'
 
 import requests
 import time
@@ -16,6 +19,7 @@ import urllib
 from uuid import uuid4
 import datetime
 import dateutil.relativedelta
+import pickle
 
 app = Flask(__name__)
 @app.route('/')
@@ -70,13 +74,7 @@ def tags_api_wrapper():
     params = {"access_token": access_token}    
     url = INSTAGRAM_BASE_URI + "v1/tags/" + hashtag + "/media/recent?" + urllib.urlencode(params)
     response = requests.get(url)
-    tagset = set()
-
-    # Compute oldest date of interest (i.e. 3 months prior to today)
-    today_datetime = datetime.datetime.now()
-    today_minus_delta_datetime = today_datetime - dateutil.relativedelta.relativedelta(months=3)
-    #print "Retrieving data from before " + datetime.datetime.fromtimestamp(int(today_minus_delta_datetime)).strftime('%Y-%m-%d %H:%M:%S')
-    print "Retrieving data from before " + today_minus_delta_datetime.strftime('%Y-%m-%d %H:%M:%S')
+    tag_dict = dict()
 
     repetition = 1
     finished = False
@@ -95,16 +93,37 @@ def tags_api_wrapper():
       for datum_json in data_json:
         created_time = datum_json['created_time']
         created_time_datetime = datetime.datetime.fromtimestamp(int(created_time))
-        if created_time_datetime < today_minus_delta_datetime:
-          finished = True
-        tagset.add(datum_json['user']['username'])
-      next_url = response.json()['pagination']['next_url']
-      print "   next_url = " + next_url
-      response = requests.get(next_url)
+        print "created_time_datetime\t " + created_time_datetime.strftime('%Y-%m-%d %H:%M:%S')
+        tagger_username = datum_json['user']['username']
+        tag_dict[tagger_username] = created_time_datetime
+
+      # Preserve intermediate result in case it crashes
+      f_myfile = open(TAG_DICT_PICKLE_FILE_NAME, 'wb')
+      pickle.dump(tag_dict, f_myfile)
+      f_myfile.close()
+
+      # Check if done (not sure if this is a comprehensive way to tell)
+      next_url = ''
+      if 'pagination' in response.json():
+        pagination_json = response.json()['pagination']        
+        if 'next_url' in pagination_json:
+          next_url = pagination_json['next_url']
+        else:
+          finished = True  
+      else:
+        finished = True
+      if '' == next_url or 0 == len(next_url):
+        finished = True
+
+      # If not done then get the next batch
+      if not finished:
+        response = requests.get(next_url)
     
+    # Format the results (remove users who posted too long ago)
     html = '<h3>Instagram users who mentioned ' + hashtag + '</h3>' + '\n'
-    for username in tagset:
-      html += username + '<br>' + '\n'
+    tagset = filter_old_mentioners(tag_dict)
+    html += format_usernames_as_list(tagset)
+
     return html
     
 def get_token(code):
@@ -117,6 +136,35 @@ def get_token(code):
                              data=post_data)
     token_json = response.json()
     return token_json["access_token"]
+
+@app.route('/' + UNPICKLE_URI_SUFFIX)
+def unpickle():
+    f_myfile = open(TAG_DICT_PICKLE_FILE_NAME, 'rb')
+    tag_dict = pickle.load(f_myfile)  # variables come out in the order you put them in
+    f_myfile.close()
+    html = '<h3>Instagram users who mentioned a hashtag (unpickled)</h3>' + '\n'
+    tagset = filter_old_mentioners(tag_dict)
+    html += format_usernames_as_list(tagset)
+
+    return html
+
+def filter_old_mentioners(tag_dict):
+    # Compute oldest date of interest (i.e. 3 months prior to today)
+    today_datetime = datetime.datetime.now()
+    today_minus_delta_datetime = today_datetime - dateutil.relativedelta.relativedelta(months=3)
+    print "Filtering out data from before " + today_minus_delta_datetime.strftime('%Y-%m-%d %H:%M:%S')
+    tagset = set()
+    for tagger_username in tag_dict:
+      created_time_datetime = tag_dict[tagger_username]
+      if created_time_datetime > today_minus_delta_datetime:
+        tagset.add(tagger_username)
+    return tagset    
+
+def format_usernames_as_list(tagset):
+    html = ''
+    for username in tagset:
+      html += username + '<br>' + '\n'
+    return html
 
 if __name__ == '__main__':
     app.run(debug=True, port=65010)
