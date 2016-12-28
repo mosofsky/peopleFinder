@@ -68,14 +68,12 @@ def tags_api_wrapper():
     import urllib
     url = INSTAGRAM_BASE_URI + "v1/tags/" + hashtag + "/media/recent?" + urllib.urlencode(params)
     response = requests.get(url)
-    # print "############# response: " + response.text  THIS WORKS
-    # print "############# response code: " + str(response.json()['meta']['code']) THIS WORKS
     tags_json = response.json()
     data_json = tags_json['data']
-    auser = 'USERPLACEHOLDER'
+    tagset = set()
     for data_json in data_json:
-      auser = data_json['user']['username']
-    return str(auser)
+      tagset.add(data_json['user']['username'])
+    return str(len(tagset))
     
 def get_token(code):
     post_data = {"client_id": CLIENT_ID,
