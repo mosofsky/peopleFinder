@@ -68,11 +68,18 @@ def tags_api_wrapper():
     import urllib
     url = INSTAGRAM_BASE_URI + "v1/tags/" + hashtag + "/media/recent?" + urllib.urlencode(params)
     response = requests.get(url)
-    tags_json = response.json()
-    data_json = tags_json['data']
     tagset = set()
-    for data_json in data_json:
-      tagset.add(data_json['user']['username'])
+
+    for repetition in range(0, 3):
+      print "##### Doing repetition " + str(repetition)
+      tags_json = response.json()
+      data_json = tags_json['data']
+      for data_json in data_json:
+        tagset.add(data_json['user']['username'])
+      next_url = response.json()['pagination']['next_url']
+      print "   next_url = " + next_url
+      response = requests.get(next_url)
+    
     html = '<h3>Instagram users who mentioned ' + hashtag + '</h3>' + '\n'
     for username in tagset:
       html += username + '<br>' + '\n'
