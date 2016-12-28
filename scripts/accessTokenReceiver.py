@@ -14,6 +14,8 @@ from flask import Flask
 from flask import abort, request
 import urllib
 from uuid import uuid4
+import datetime
+import dateutil.relativedelta
 
 app = Flask(__name__)
 @app.route('/')
@@ -70,7 +72,15 @@ def tags_api_wrapper():
     response = requests.get(url)
     tagset = set()
 
-    for repetition in range(0, 3):
+    # Compute oldest date of interest (i.e. 3 months prior to today)
+    today_datetime = datetime.datetime.now()
+    today_minus_delta_datetime = today_datetime - dateutil.relativedelta.relativedelta(months=3)
+    #print "Retrieving data from before " + datetime.datetime.fromtimestamp(int(today_minus_delta_datetime)).strftime('%Y-%m-%d %H:%M:%S')
+    print "Retrieving data from before " + today_minus_delta_datetime.strftime('%Y-%m-%d %H:%M:%S')
+
+    repetition = 1
+    finished = False
+    while not finished:
 
       # See https://www.instagram.com/developer/limits/ for details about rate limiting
       if 429 == response.status_code or 400 == response.status_code:
@@ -78,10 +88,16 @@ def tags_api_wrapper():
         time.sleep(SLEEP_DURATION_MINUTES * 60)
 
       print "##### Doing repetition " + str(repetition)
+      repetition += 1
       tags_json = response.json()
       data_json = tags_json['data']
-      for data_json in data_json:
-        tagset.add(data_json['user']['username'])
+      
+      for datum_json in data_json:
+        created_time = datum_json['created_time']
+        created_time_datetime = datetime.datetime.fromtimestamp(int(created_time))
+        if created_time_datetime < today_minus_delta_datetime:
+          finished = True
+        tagset.add(datum_json['user']['username'])
       next_url = response.json()['pagination']['next_url']
       print "   next_url = " + next_url
       response = requests.get(next_url)
