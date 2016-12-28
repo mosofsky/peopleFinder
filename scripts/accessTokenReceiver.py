@@ -9,8 +9,12 @@ INSTAGRAM_AUTH_API_URL = "https://www.instagram.com/oauth/authorize/"
 INSTAGRAM_BASE_URI = "https://api.instagram.com/"
 
 import requests
-
+import time
 from flask import Flask
+from flask import abort, request
+import urllib
+from uuid import uuid4
+
 app = Flask(__name__)
 @app.route('/')
 def homepage():
@@ -20,14 +24,12 @@ def homepage():
 def make_authorization_url():
     # Generate a random string for the state parameter
     # Save it for use later to prevent xsrf attacks
-    from uuid import uuid4
     state = str(uuid4())
     save_created_state(state)
     params = {"client_id": CLIENT_ID,
               "response_type": "code",
               "redirect_uri": REDIRECT_URI,
-              "state": state}
-    import urllib
+              "state": state}    
     url = INSTAGRAM_AUTH_API_URL + "?" + urllib.urlencode(params)
     return url
 
@@ -39,7 +41,6 @@ def save_created_state(state):
 def is_valid_state(state):
     return True
 
-from flask import abort, request
 @app.route('/' + REDIRECT_URI_SUFFIX)
 def access_token_callback():
     error = request.args.get('error', '')
@@ -64,13 +65,18 @@ def access_token_callback():
 def tags_api_wrapper():
     access_token = request.args.get('access_token', 'ACCESS_TOKEN_MISSING')
     hashtag = request.args.get('hashtag', 'HASHTAG_MISSING')
-    params = {"access_token": access_token}
-    import urllib
+    params = {"access_token": access_token}    
     url = INSTAGRAM_BASE_URI + "v1/tags/" + hashtag + "/media/recent?" + urllib.urlencode(params)
     response = requests.get(url)
     tagset = set()
 
     for repetition in range(0, 3):
+
+      # See https://www.instagram.com/developer/limits/ for details about rate limiting
+      if 429 == response.status_code or 400 == response.status_code:
+        print "Sleeping for " + SLEEP_DURATION_MINUTES + " minutes"
+        time.sleep(SLEEP_DURATION_MINUTES * 60)
+
       print "##### Doing repetition " + str(repetition)
       tags_json = response.json()
       data_json = tags_json['data']
