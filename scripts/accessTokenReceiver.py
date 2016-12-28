@@ -73,7 +73,10 @@ def tags_api_wrapper():
     tagset = set()
     for data_json in data_json:
       tagset.add(data_json['user']['username'])
-    return str(len(tagset))
+    html = '<h3>Instagram users who mentioned ' + hashtag + '</h3>' + '\n'
+    for username in tagset:
+      html += username + '<br>' + '\n'
+    return html
     
 def get_token(code):
     post_data = {"client_id": CLIENT_ID,
